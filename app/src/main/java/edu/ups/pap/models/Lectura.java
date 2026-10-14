@@ -1,4 +1,7 @@
 package edu.ups.pap.models;
+
+import java.util.function.Function;
+
 public class Lectura <T> {
     private String idSensor;
     private T valor;
@@ -19,6 +22,16 @@ public class Lectura <T> {
     }
     public String getUnidad() {
         return unidad;
+    }
+
+    public <R> Lectura<R> transformar(Function<T,R> conversor, String nuevaUnidad) throws IllegalAccessException {
+        if(conversor == null){
+            throw new IllegalAccessException("El conversor no puede ser nulo"); 
+        }
+        R nuevo = conversor.apply(valor);
+        
+        return new Lectura<>(idSensor, nuevo, nuevaUnidad);
+
     }
     
     
